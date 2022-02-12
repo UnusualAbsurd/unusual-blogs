@@ -4,6 +4,12 @@ import { useEffect } from "react";
 import Container from "../../../components/ui/Container";
 import { withSessionSsr } from "../../../lib/session";
 import { Blog, User } from "../../../typings";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import remarkSlug from "remark-slug";
+import remarkToc from "remark-toc";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 interface Props {
   user?: User;
@@ -23,7 +29,29 @@ export default function Blogs({ user, blog }: Props) {
 
   return (
     <Container user={user} title="Community Blogs">
-      {null}
+      <div className="flex flex-col justify-center items-center mt-32 lg:mt-52 space-y-2 text-white text-lg">
+        <ReactMarkdown
+          remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+          rehypePlugins={[rehypeRaw]}
+          components={{
+            h1: "h2",
+            code({ node, inline, className, children, ...props }) {
+              const match = /language-(\w+)/.exec(className || "");
+              return !inline && match ? (
+                <SyntaxHighlighter language={match[1]} PreTag="div" {...props}>
+                  {String(children).replace(/\n$/, "")}
+                </SyntaxHighlighter>
+              ) : (
+                <code className={className} {...props}>
+                  {children}
+                </code>
+              );
+            },
+          }}
+        >
+          {blog.content}
+        </ReactMarkdown>
+      </div>
     </Container>
   );
 }

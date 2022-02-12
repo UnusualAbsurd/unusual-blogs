@@ -9,6 +9,12 @@ import { useMediaQuery } from "react-responsive";
 import { NotificationManager } from "react-notifications";
 import { stringify } from "querystring";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeRaw from "rehype-raw";
+import remarkSlug from "remark-slug";
+import remarkToc from "remark-toc";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 
 interface Props {
   user: User;
@@ -18,6 +24,9 @@ export default function CreateBlog({ user }: Props) {
   const [title, setTitle] = useState("");
   const [subtitle, setSubtitle] = useState("");
   const [content, setContent] = useState("");
+  const [markdown, setMarkdown] = useState(
+    "This will change when you edit the content"
+  );
   const [loading, setLoading] = useState(false);
 
   const isMobile = useMediaQuery({
@@ -78,6 +87,7 @@ export default function CreateBlog({ user }: Props) {
                     type="text"
                     onChange={(e) => setTitle(e.target.value)}
                     className="border border-black rounded-md w-[18rem] h-8 text-sm"
+                    maxLength={35}
                     placeholder="Blog title"
                   />
                 </div>
@@ -90,12 +100,51 @@ export default function CreateBlog({ user }: Props) {
                     placeholder="Blog subtitle"
                   />
                 </div>
-                <div className="text-lg text-black flex flex-col space-y-3">
-                  Content
+                <div className="text-lg text-black flex flex-col space-y-3 group">
+                  <div className="flex items-center space-x-2">
+                    Content <div></div>
+                    <p className="font-semibold">
+                      {"[ Markdown and HTML Support ]"}
+                    </p>
+                  </div>
                   <textarea
-                    className="bg-white text-black placeholder-gray-500 p-3 outline-none text-sm rounded-md overflow-auto w-[53rem] border border-black"
-                    onChange={(e) => setContent(e.target.value)}
+                    className="bg-white text-black placeholder-gray-500 p-3 outline-none text-sm rounded-md overflow-auto w-[53rem] h-[10rem] border border-black"
+                    onChange={(e) => {
+                      setContent(e.target.value);
+                      setMarkdown(e.target.value);
+                    }}
                   />
+                </div>
+                <div className="text-lg text-black flex flex-col space-y-3 group">
+                  <p className="font-bold">Preview</p>
+
+                  <div className="border ">
+                    <ReactMarkdown
+                      remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+                      rehypePlugins={[rehypeRaw]}
+                      components={{
+                        h1: "h2",
+                        code({ node, inline, className, children, ...props }) {
+                          const match = /language-(\w+)/.exec(className || "");
+                          return !inline && match ? (
+                            <SyntaxHighlighter
+                              language={match[1]}
+                              PreTag="div"
+                              {...props}
+                            >
+                              {String(children).replace(/\n$/, "")}
+                            </SyntaxHighlighter>
+                          ) : (
+                            <code className={className} {...props}>
+                              {children}
+                            </code>
+                          );
+                        },
+                      }}
+                    >
+                      {markdown}
+                    </ReactMarkdown>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-col space-y-2">
@@ -159,6 +208,7 @@ export default function CreateBlog({ user }: Props) {
                     type="text"
                     onChange={(e) => setTitle(e.target.value)}
                     className="border border-black rounded-md w-[18rem] h-8 text-sm"
+                    maxLength={35}
                     placeholder="Blog title"
                   />
                 </div>
@@ -175,8 +225,42 @@ export default function CreateBlog({ user }: Props) {
                   Content
                   <textarea
                     className="bg-white text-black placeholder-gray-500 p-3 outline-none text-sm rounded-md overflow-auto w-[18rem] h-[15rem] border border-black"
-                    onChange={(e) => setContent(e.target.value)}
+                    onChange={(e) => {
+                      setContent(e.target.value);
+                      setMarkdown(e.target.value);
+                    }}
                   />
+                </div>
+              </div>
+              <div className="text-lg text-black flex flex-col space-y-3 group">
+                <p className="font-bold">Preview</p>
+
+                <div className="border ">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                    components={{
+                      h1: "h2",
+                      code({ node, inline, className, children, ...props }) {
+                        const match = /language-(\w+)/.exec(className || "");
+                        return !inline && match ? (
+                          <SyntaxHighlighter
+                            language={match[1]}
+                            PreTag="div"
+                            {...props}
+                          >
+                            {String(children).replace(/\n$/, "")}
+                          </SyntaxHighlighter>
+                        ) : (
+                          <code className={className} {...props}>
+                            {children}
+                          </code>
+                        );
+                      },
+                    }}
+                  >
+                    {markdown}
+                  </ReactMarkdown>
                 </div>
               </div>
               <div className="flex flex-col space-y-2">

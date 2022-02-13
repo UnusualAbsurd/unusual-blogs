@@ -45,7 +45,7 @@ export default function Blogs({ user, blogs, users }: Props) {
             </div>
             <div className="mt-16 border-t-2 border-white flex flex-col items-center sm:space-y-10">
               <br />
-              <div className="rounded-md space-y-1 grid sm:grid-cols-5 sm:gap-4">
+              <div className="rounded-md">
                 {blogs
                   .sort((a, b) => b.views - a.views)
                   .slice(0, 9)

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FiEdit } from "react-icons/fi";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaShare } from "react-icons/fa";
@@ -28,7 +28,6 @@ interface Props {
 export default function Blogs({ user, blog, author }: Props) {
   const router = useRouter();
   const { id } = router.query;
-  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!localStorage.getItem(`view-${id}`)) {
@@ -82,7 +81,7 @@ export default function Blogs({ user, blog, author }: Props) {
                 }}
               >
                 <FaShare /> <div>Share</div>
-              </p>
+              </p>{" "}
               {user?.blogs.includes(blog._id) && (
                 <>
                   <Link href={`/blogs/${blog._id}/edit`}>

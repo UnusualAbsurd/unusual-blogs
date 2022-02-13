@@ -1,8 +1,6 @@
 import { withSessionApi } from "../../../lib/session";
 import { micahAvatar } from "../../../lib/util";
-import { generate } from "rand-token";
 import clientPromise from "../../../lib/mongodb";
-import { url } from "inspector";
 
 export default withSessionApi(async (req, res) => {
   if (req.method == "POST") {
@@ -51,6 +49,7 @@ export default withSessionApi(async (req, res) => {
       username,
       avatar: new_avatar,
       token: user.token,
+      blogs: user.blogs,
     };
 
     await req.session.save();

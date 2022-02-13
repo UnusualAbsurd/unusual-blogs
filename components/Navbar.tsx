@@ -114,8 +114,8 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                       <img
                         src={user.avatar}
                         alt="User Avatar"
-                        height={50}
-                        width={50}
+                        height={48}
+                        width={48}
                         className="rounded-full bg-transparent"
                       />
                       <div>

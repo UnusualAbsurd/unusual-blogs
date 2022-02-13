@@ -16,10 +16,6 @@ interface Props {
 export default function Blogs({ user, blogs, users }: Props) {
   const isMobile = useMediaQuery({ maxWidth: 768 });
 
-  useEffect(() => {
-    console.log(users);
-  }, [users]);
-
   return (
     <Container user={user} title="Community Blogs">
       {!isMobile ? (

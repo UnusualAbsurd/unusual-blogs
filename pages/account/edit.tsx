@@ -12,8 +12,8 @@ interface Props {
 }
 
 export default function AccountLogin({ user }: Props) {
-  const [username, setUsername] = useState("");
-  const [avatar, setAvatar] = useState("");
+  const [username, setUsername] = useState(user.username);
+  const [avatar, setAvatar] = useState(user.avatar);
   const [loading, setLoading] = useState(false);
   const isMobile = useMediaQuery({
     maxWidth: 728,

@@ -1,9 +1,7 @@
 import Container from "../../../components/ui/Container";
 import { withSessionSsr } from "../../../lib/session";
 import { User } from "../../../typings";
-import Link from "next/link";
 import { useState } from "react";
-import animations from "../../../styles/animations.module.scss";
 import clsx from "clsx";
 import { useMediaQuery } from "react-responsive";
 import { NotificationManager } from "react-notifications";
@@ -55,7 +53,6 @@ export default function CreateBlog({ user }: Props) {
         }
       )
       .then(async (response) => {
-        console.log(response.status);
         if (response.status !== 200) return undefined;
         if (response.status == 200) return response.data;
       });
@@ -64,10 +61,10 @@ export default function CreateBlog({ user }: Props) {
   return (
     <Container user={user} title="Create Blog">
       {!isMobile && (
-        <div className="flex flex-col justify-center items-center mt-32 lg:mt-52 space-y-2">
+        <div className="flex justify-center items-center mt-32 lg:mt-52 space-x-4">
           <div
             className={clsx(
-              "p-4 bg-white rounded-md h-full w-[20rem] sm:w-[55rem]"
+              "p-4 bg-white rounded-md h-full w-[20rem] sm:w-[50rem]"
             )}
           >
             <div className="flex flex-col justify-between space-y-4 h-full">
@@ -108,43 +105,12 @@ export default function CreateBlog({ user }: Props) {
                     </p>
                   </div>
                   <textarea
-                    className="bg-white text-black placeholder-gray-500 p-3 outline-none text-sm rounded-md overflow-auto w-[53rem] h-[10rem] border border-black"
+                    className="bg-white text-black placeholder-gray-500 p-3 outline-none text-sm rounded-md overflow-auto w-[48rem] h-[10rem] border border-black"
                     onChange={(e) => {
                       setContent(e.target.value);
                       setMarkdown(e.target.value);
                     }}
                   />
-                </div>
-                <div className="text-lg text-black flex flex-col space-y-3 group">
-                  <p className="font-bold">Preview</p>
-
-                  <div className="border ">
-                    <ReactMarkdown
-                      remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
-                      rehypePlugins={[rehypeRaw]}
-                      components={{
-                        h1: "h2",
-                        code({ node, inline, className, children, ...props }) {
-                          const match = /language-(\w+)/.exec(className || "");
-                          return !inline && match ? (
-                            <SyntaxHighlighter
-                              language={match[1]}
-                              PreTag="div"
-                              {...props}
-                            >
-                              {String(children).replace(/\n$/, "")}
-                            </SyntaxHighlighter>
-                          ) : (
-                            <code className={className} {...props}>
-                              {children}
-                            </code>
-                          );
-                        },
-                      }}
-                    >
-                      {markdown}
-                    </ReactMarkdown>
-                  </div>
                 </div>
               </div>
               <div className="flex flex-col space-y-2">
@@ -182,8 +148,44 @@ export default function CreateBlog({ user }: Props) {
               </div>
             </div>
           </div>
+          <div>
+            <div className="text-lg text-black p-4 bg-white rounded-md h-full w-[20rem] sm:w-[42rem] flex flex-col space-y-3 group">
+              <div className="flex justify-center items-center">
+                <p className="font-bold">Preview</p>
+              </div>
+
+              <ReactMarkdown
+                remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  h1: "h2",
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {markdown}
+              </ReactMarkdown>
+            </div>
+          </div>
         </div>
       )}
+      {
+        // MOBILE
+      }
       {isMobile && (
         <div className="flex flex-col justify-center items-center mt-32 lg:mt-52 space-y-2">
           <div

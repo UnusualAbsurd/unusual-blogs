@@ -10,6 +10,7 @@ export type User = {
   username: string;
   avatar: string;
   token: string;
+  blogs: string[];
 };
 
 export type Blog = {

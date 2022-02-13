@@ -37,6 +37,18 @@ export default withSessionApi(async (req, res) => {
       }
     );
 
+    const old_user = req.session.user;
+    const new_blogs = [`${new_data.insertedId}`];
+    old_user?.blogs.forEach((v: string) => new_blogs.push(v));
+
+    req.session.user = {
+      username: user.username,
+      avatar: user.avatar,
+      token: user.token,
+      blogs: new_blogs,
+    };
+
+    await req.session.save();
     res.status(200).send(new_data);
   } else if (req.method !== "POST")
     return res.status(400).send({ message: "Method not allowed" });

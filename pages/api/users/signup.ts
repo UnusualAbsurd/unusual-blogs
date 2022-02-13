@@ -2,7 +2,6 @@ import { withSessionApi } from "../../../lib/session";
 import { micahAvatar } from "../../../lib/util";
 import { generate } from "rand-token";
 import clientPromise from "../../../lib/mongodb";
-import { url } from "inspector";
 
 export default withSessionApi(async (req, res) => {
   if (req.method == "POST") {
@@ -35,6 +34,7 @@ export default withSessionApi(async (req, res) => {
       username,
       avatar: (await checkImage(avatar)) == true ? avatar : new_avatar,
       token: new_token,
+      blogs: [],
     };
 
     const new_user = await db.insertOne({

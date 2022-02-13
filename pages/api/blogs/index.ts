@@ -1,6 +1,5 @@
 import clientPromise from "../../../lib/mongodb";
 import { withSessionApi } from "../../../lib/session";
-import { Blog } from "../../../typings";
 
 export default withSessionApi(async (req, res) => {
   const client = await clientPromise;

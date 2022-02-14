@@ -20,8 +20,6 @@ import Link from "next/link";
 interface Props {
   user?: User;
   blog: Blog;
-  // users: DBUser[];
-  blogs: Blog[];
   author: DBUser;
 }
 
@@ -48,7 +46,7 @@ export default function Blogs({ user, blog, author }: Props) {
   }
 
   return (
-    <Container user={user} title="Community Blogs">
+    <Container user={user} title={blog.title}>
       <div className="flex justify-center items-center mt-32 lg:mt-52 space-y-2 text-white text-lg">
         <div className="flex flex-col items-center space-y-10">
           <div className="flex flex-col items-start space-y-3">

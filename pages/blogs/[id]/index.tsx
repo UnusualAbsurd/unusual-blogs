@@ -20,7 +20,9 @@ import Link from "next/link";
 interface Props {
   user?: User;
   blog: Blog;
-  author: DBUser;
+  author: DBUser & {
+    _id: string;
+  };
 }
 
 export default function Blogs({ user, blog, author }: Props) {
@@ -63,7 +65,11 @@ export default function Blogs({ user, blog, author }: Props) {
                   height={20}
                   className="rounded-full"
                 />
-                <p className="text-sm text-gray-200">{author.username}</p>
+                <Link href={"/users/" + author._id} passHref>
+                  <p className="text-sm text-gray-200 cursor-pointer">
+                    {author.username}
+                  </p>
+                </Link>
               </div>{" "}
             </div>
             <div className="flex items-center space-x-5">
@@ -113,7 +119,7 @@ export default function Blogs({ user, blog, author }: Props) {
             </div>
           </div>
 
-          <div className="space-y-0">
+          <div>
             <ReactMarkdown
               remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
               rehypePlugins={[rehypeRaw]}
@@ -142,6 +148,8 @@ export default function Blogs({ user, blog, author }: Props) {
           </div>
         </div>
       </div>
+      <br />
+      <br />
     </Container>
   );
 }
@@ -169,6 +177,7 @@ export const getServerSideProps = withSessionSsr(async function blogsRoute(
   const author = {
     username: authordb?.username,
     avatar: authordb?.avatar,
+    _id: authordb?._id.toString(),
   };
 
   return {

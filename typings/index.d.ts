@@ -7,6 +7,7 @@ export type DBUser = {
 };
 
 export type User = {
+  _id: string;
   username: string;
   avatar: string;
   token: string;

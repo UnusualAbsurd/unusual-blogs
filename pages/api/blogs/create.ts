@@ -46,6 +46,7 @@ export default withSessionApi(async (req, res) => {
       avatar: user.avatar,
       token: user.token,
       blogs: new_blogs,
+      _id: user._id.toString(),
     };
 
     await req.session.save();

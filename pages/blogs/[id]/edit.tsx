@@ -1,6 +1,7 @@
 import Container from "../../../components/ui/Container";
 import { withSessionSsr } from "../../../lib/session";
 import { User, Blog } from "../../../typings";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import clsx from "clsx";
 import { useMediaQuery } from "react-responsive";
@@ -20,6 +21,8 @@ interface Props {
 }
 
 export default function CreateBlog({ user, blog }: Props) {
+  const router = useRouter();
+
   const [title, setTitle] = useState(blog.title);
   const [subtitle, setSubtitle] = useState(blog.subtitle);
   const [content, setContent] = useState(blog.content);
@@ -135,10 +138,10 @@ export default function CreateBlog({ user, blog }: Props) {
                           );
                         if (response) {
                           NotificationManager.success(
-                            `Successfully edit the blog`
+                            `Successfully edited the blog`
                           );
                           setTimeout(() => {
-                            location.replace(`/blogs/${response.upsertedId}`);
+                            location.replace(`/blogs/${router.query.id}`);
                           }, 1500);
                         }
                       }
@@ -293,7 +296,7 @@ export default function CreateBlog({ user, blog }: Props) {
                             `Successfully edited the blog`
                           );
                           setTimeout(() => {
-                            location.replace(`/blogs/${response.upsertedId}`);
+                            location.replace(`/blogs/${router.query.id}`);
                           }, 1500);
                         }
                       }

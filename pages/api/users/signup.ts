@@ -30,13 +30,6 @@ export default withSessionApi(async (req, res) => {
       }
     };
 
-    req.session.user = {
-      username,
-      avatar: (await checkImage(avatar)) == true ? avatar : new_avatar,
-      token: new_token,
-      blogs: [],
-    };
-
     const new_user = await db.insertOne({
       username,
       password,
@@ -44,6 +37,15 @@ export default withSessionApi(async (req, res) => {
       token: new_token,
       blogs: [],
     });
+
+    req.session.user = {
+      username,
+      avatar: (await checkImage(avatar)) == true ? avatar : new_avatar,
+      token: new_token,
+      blogs: [],
+      _id: new_user.insertedId.toString(),
+    };
+
     await req.session.save();
 
     res.status(200).send(new_user);

@@ -27,7 +27,7 @@ function Links({ data }: LinksProps) {
     <>
       {data.map((res, index) => {
         return (
-          <li key={index}>
+          <li key={Math.random() * index}>
             <Link href={res.path as string} passHref>
               <button
                 className="text-white hover:text-gray-300 space-x-1 text-[20px] font-semibold"
@@ -119,7 +119,11 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                         className="rounded-full bg-transparent"
                       />
                       <div>
-                        <p className="text-2xl">{user.username}</p>
+                        <Link href={`/users/${user._id}`}>
+                          <p className="text-2xl hover:underline hover:underline-offset-1 cursor-pointer">
+                            {user.username}
+                          </p>
+                        </Link>
                       </div>
                     </div>
                     <div className="flex items-center space-x-2">

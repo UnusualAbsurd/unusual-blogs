@@ -39,6 +39,7 @@ export default function AccountLogin({ user }: Props) {
                 <p>Username</p>
                 <input
                   type="text"
+                  name="username"
                   onChange={(e) => setUsername(e.target.value)}
                   className="border border-black rounded-md w-[15rem] h-8 font-semibold"
                   maxLength={20}
@@ -49,6 +50,7 @@ export default function AccountLogin({ user }: Props) {
                 <p>Password</p>
                 <input
                   type="password"
+                  name="password"
                   onChange={(e) => setPassword(e.target.value)}
                   className="border border-black rounded-md w-[15rem] h-8 font-semibold"
                   maxLength={20}

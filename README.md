@@ -15,8 +15,12 @@ npm run dev
 COOKIE_SECRET=
 MONGODB_URI=
 MONGODB_NAME=
+REDIS_ENDPOINT=
+REDIS_PASSWORD=
 ```
 
 - `COOKIE_SECRET` = Generate a 32 length cookie secret from https://1password.com/password-generator
 - `MONGODB_URI` = The [MongoDB](https://mongodb.com) srv from your cluster
 - `MONGODB_NAME` = The collection name of the database
+- `REDIS_ENDPOINT` = Redis public endpoint
+- `REDIS_PASSWORD` = Redis user default password

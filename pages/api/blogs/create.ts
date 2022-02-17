@@ -1,14 +1,21 @@
 import clientPromise from "../../../lib/mongodb";
+import redisConnect from "../../../lib/redis";
 import { withSessionApi } from "../../../lib/session";
 import { Blog } from "../../../typings";
 
 export default withSessionApi(async (req, res) => {
   if (req.method == "POST") {
     const client = await clientPromise;
+    const redis = redisConnect();
     const db = client.db("Blogger").collection("blogs");
     const userdb = client.db("Blogger").collection("users");
     const user = await userdb.findOne({ token: req.headers.authorization });
     if (!user) return res.status(403).send({ message: "Unauthorized" });
+
+    if ((await redis.get(user._id.toString())) == "yes")
+      return res
+        .status(200)
+        .send({ message: "User already created a blog today" });
 
     const { title, subtitle, content, private_blog }: Blog = req.body;
 
@@ -50,6 +57,7 @@ export default withSessionApi(async (req, res) => {
     };
 
     await req.session.save();
+    redis.set(user._id.toString(), "yes");
     res.status(200).send(new_data);
   } else if (req.method !== "POST")
     return res.status(400).send({ message: "Method not allowed" });

@@ -53,8 +53,7 @@ export default function CreateBlog({ user }: Props) {
         }
       )
       .then(async (response) => {
-        if (response.status !== 200) return undefined;
-        if (response.status == 200) return response.data;
+        return response.data;
       });
   }
 
@@ -127,11 +126,20 @@ export default function CreateBlog({ user }: Props) {
                     setLoading(true);
                     create(window.origin, title, subtitle, content).then(
                       (response) => {
-                        if (!response)
-                          return NotificationManager.error(
-                            "Failed to create the blog"
-                          );
-                        if (response) {
+                        if (!response.insertedId) {
+                          if (
+                            response.message ==
+                            "User already created a blog today"
+                          )
+                            return NotificationManager.error(
+                              `You already created a blog today!`
+                            );
+                          else
+                            return NotificationManager.error(
+                              "Failed to create the blog"
+                            );
+                        }
+                        if (response.insertedId) {
                           NotificationManager.success(
                             `Successfully created the blog`
                           );

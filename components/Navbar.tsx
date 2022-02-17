@@ -14,6 +14,7 @@ export interface NavbarProps {
 
 interface LinksPropsObject {
   name: string | null;
+  customName?: string;
   path: string | null;
   icon?: ReactNode;
 }
@@ -35,6 +36,7 @@ function Links({ data }: LinksProps) {
                   display: `${res.icon ? "flex" : ""}`,
                   alignItems: `${res.icon ? "center" : ""}`,
                 }}
+                name={res.customName ? res.customName : undefined}
               >
                 {res.icon ? res.icon : null} <div>{res.name}</div>
               </button>
@@ -90,11 +92,13 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                       name: "Community Blogs",
                       path: "/blogs",
                       icon: <FaAddressBook />,
+                      customName: "community blogs",
                     },
                     {
                       name: "Create a blog",
                       path: "/blogs/create",
                       icon: <IoIosCreate />,
+                      customName: "create a blog",
                     },
                   ]}
                 />

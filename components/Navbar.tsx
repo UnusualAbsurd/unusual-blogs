@@ -79,8 +79,8 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                   <img
                     src={"/logo.png"}
                     alt="Logo"
-                    height={50}
-                    width={50}
+                    height={40}
+                    width={40}
                     className="cursor-pointer"
                   />
                 </Link>

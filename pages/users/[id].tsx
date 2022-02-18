@@ -42,20 +42,31 @@ export default function UserPage({ user, account, blogs }: Props) {
                 >
                   {account.username}
                 </h1>
-                <p className="text-gray-400 flex items-center space-x-1">
-                  <ImDrawer /> <p>Total Blogs: {blogs.length}</p>
-                </p>{" "}
-                <p className="text-gray-400 flex items-center space-x-1">
-                  <ImEye />{" "}
-                  <p>
-                    Total Views:{" "}
-                    {blogs.map((blog) => blog.views).reduce((a, b) => a + b, 0)}
+                <div className="flex flex-col">
+                  <p className="text-gray-400 flex items-center space-x-1">
+                    <ImDrawer /> <p>Total Blogs: {blogs.length}</p>
                   </p>
-                </p>
+
+                  <p className="text-gray-400 flex items-center space-x-1">
+                    <ImEye />{" "}
+                    <p>
+                      Total Views:{" "}
+                      {blogs
+                        .map((blog) => blog.views)
+                        .reduce((a, b) => a + b, 0)}
+                    </p>
+                  </p>
+                </div>
               </div>
             </div>
             <div className="flex flex-col items-center space-y-2">
               <h2 className="text-lg text-white font-semibold">Blogs</h2>
+              <div
+                className={clsx(
+                  "border-t-[2px] border-gray-600",
+                  isMobile ? "w-[20rem]" : "w-[70rem]"
+                )}
+              ></div>
               {!isMobile ? (
                 <>
                   <div className="grid grid-cols-3 gap-4">

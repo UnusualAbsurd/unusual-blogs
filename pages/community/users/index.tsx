@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
 import { FaUserPlus } from "react-icons/fa";
 import Confirm from "../../../components/ui/Confirm";
+import { NotificationManager } from "react-notifications";
+import axios from "axios";
 
 interface Props {
   user: User;
@@ -56,12 +58,17 @@ export default function CommunityUsers({ user, users }: Props) {
                     {search
                       ? users
                           .filter(
-                            (user) =>
-                              user.username
+                            (account) =>
+                              account.id !== user.id &&
+                              (account.username
                                 .toLowerCase()
-                                .includes(search.toLowerCase()) ||
-                              user.id == search
+                                .replace(/\s+/g, "")
+                                .includes(
+                                  search.toLowerCase().replace(/\s+/g, "")
+                                ) ||
+                                account.id == search)
                           )
+
                           .map((user) => (
                             <UserContainer
                               user={user}
@@ -71,6 +78,7 @@ export default function CommunityUsers({ user, users }: Props) {
                             />
                           ))
                       : users
+
                           .slice(0, 50)
                           .map((user) => (
                             <UserContainer
@@ -90,10 +98,13 @@ export default function CommunityUsers({ user, users }: Props) {
                 <div className="flex flex-col items-center space-y-2">
                   {users
                     .filter(
-                      (user) =>
-                        user.username
+                      (account) =>
+                        account.id !== user.id &&
+                        (account.username
                           .toLowerCase()
-                          .includes(search.toLowerCase()) || user.id == search
+                          .replace(/\s+/g, "")
+                          .includes(search.toLowerCase().replace(/\s+/g, "")) ||
+                          account.id == search)
                     )
                     .map((user) => (
                       <UserContainer
@@ -115,9 +126,23 @@ export default function CommunityUsers({ user, users }: Props) {
             title={`Are you sure you want to friend ${pickedUserId.username} ?`}
             description=""
             onConfirm={(e) => {
-              fetch(`/api/users/${user.id}/friends?id=${pickedUserId.id}`, {});
+              if (pickedUserId.id == user.id)
+                return NotificationManager.error(`You cannot friend yourself`);
+              axios(`/api/users/${user.id}/friends?id=${pickedUserId}`, {
+                headers: {
+                  authorization: user.token,
+                },
+              }).then((response) => {
+                if (response.status != 200)
+                  return NotificationManager.error(response.data.message);
+                else
+                  NotificationManager.success(
+                    "Successfully sent a friend request to " +
+                      pickedUserId.username
+                  );
+              });
             }}
-            onCancel={(e) => console.log("cancled ")}
+            onCancel={() => {}}
           />
         </>
       </Container>

@@ -5,6 +5,7 @@ export type DBUser = {
   password: string;
   blogs: string[];
   id: string;
+  friends: string[];
 };
 
 export type User = {
@@ -13,6 +14,7 @@ export type User = {
   token: string;
   blogs: string[];
   id: string;
+  friends: string[];
 };
 
 export type Blog = {

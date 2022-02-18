@@ -81,7 +81,7 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                     alt="Logo"
                     height={50}
                     width={50}
-                    className="rounded-full cursor-pointer"
+                    className="cursor-pointer"
                   />
                 </Link>
               )}

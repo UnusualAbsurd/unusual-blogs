@@ -73,16 +73,11 @@ export const getServerSideProps = withSessionSsr(async function blogsRoute({
   const { user } = req.session;
   const { data: blogs } = await axios.get(`http://localhost:3000/api/blogs`);
   const client = await clientPromise;
-  const users: object[] = [];
-
-  await (
-    await client.db("Blogger").collection("users").find({}).toArray()
-  ).map((user) => {
-    users.push({
-      username: user.username,
-      blogs: user.blogs,
-    });
-  });
+  const users = await client
+    .db("Blogger")
+    .collection("users")
+    .find({}, { projection: { _id: 0 } })
+    .toArray();
 
   return {
     props: user ? { user, blogs, users } : { blogs, users },

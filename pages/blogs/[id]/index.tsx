@@ -170,15 +170,13 @@ export const getServerSideProps = withSessionSsr(async function blogsRoute(
       },
     };
 
-  const authordb = (
-    await client.db("Blogger").collection("users").find({}).toArray()
+  const author = (
+    await client
+      .db("Blogger")
+      .collection("users")
+      .find({}, { projection: { _id: 0 } })
+      .toArray()
   ).find((user) => user.blogs.includes(blog._id));
-
-  const author = {
-    username: authordb?.username,
-    avatar: authordb?.avatar,
-    id: authordb?.id,
-  };
 
   return {
     props: user ? { user, blog, author } : { blog, author },

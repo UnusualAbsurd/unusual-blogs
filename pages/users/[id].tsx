@@ -86,9 +86,7 @@ export const getServerSideProps = withSessionSsr(async function userRoute(req) {
 
   const db = (await clientPromise).db("Blogger");
   const users = await db.collection("users").find({}).toArray();
-  const db_account = await users.find(
-    (user) => user._id.toString() == (req.query.id as string)
-  );
+  const db_account = await users.find((user) => user.id == req.query.id);
   if (!db_account)
     return {
       redirect: {
@@ -101,7 +99,7 @@ export const getServerSideProps = withSessionSsr(async function userRoute(req) {
     username: db_account.username,
     avatar: db_account.avatar,
     blogs: db_account.blogs,
-    _id: db_account._id.toString(),
+    id: db_account.id,
   };
 
   const blog_data = (await db.collection("blogs").find({}).toArray()).filter(

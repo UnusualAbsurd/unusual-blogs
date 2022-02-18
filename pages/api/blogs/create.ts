@@ -12,10 +12,10 @@ export default withSessionApi(async (req, res) => {
     const user = await userdb.findOne({ token: req.headers.authorization });
     if (!user) return res.status(403).send({ message: "Unauthorized" });
 
-    if ((await redis.get(user._id.toString())) == "yes")
-      return res
-        .status(200)
-        .send({ message: "User already created a blog today" });
+    // if ((await redis.get(user._id.toString())) == "yes")
+    //   return res
+    //     .status(200)
+    //     .send({ message: "User already created a blog today" });
 
     const { title, subtitle, content, private_blog }: Blog = req.body;
 
@@ -53,11 +53,10 @@ export default withSessionApi(async (req, res) => {
       avatar: user.avatar,
       token: user.token,
       blogs: new_blogs,
-      _id: user._id.toString(),
+      id: user.id,
     };
 
     await req.session.save();
-    redis.set(user._id.toString(), "yes");
     res.status(200).send(new_data);
   } else if (req.method !== "POST")
     return res.status(400).send({ message: "Method not allowed" });

@@ -65,7 +65,7 @@ export default function Blogs({ user, blog, author }: Props) {
                   height={20}
                   className="rounded-full"
                 />
-                <Link href={"/users/" + author._id} passHref>
+                <Link href={"/users/" + author.id} passHref>
                   <p className="text-sm text-gray-200 cursor-pointer">
                     {author.username}
                   </p>
@@ -177,7 +177,7 @@ export const getServerSideProps = withSessionSsr(async function blogsRoute(
   const author = {
     username: authordb?.username,
     avatar: authordb?.avatar,
-    _id: authordb?._id.toString(),
+    id: authordb?.id,
   };
 
   return {

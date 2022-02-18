@@ -4,14 +4,15 @@ export type DBUser = {
   token: string;
   password: string;
   blogs: string[];
+  id: string;
 };
 
 export type User = {
-  _id: string;
   username: string;
   avatar: string;
   token: string;
   blogs: string[];
+  id: string;
 };
 
 export type Blog = {

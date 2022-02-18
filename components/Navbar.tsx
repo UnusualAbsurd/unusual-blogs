@@ -123,7 +123,7 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                         className="rounded-full bg-transparent"
                       />
                       <div>
-                        <Link href={`/users/${user._id}`}>
+                        <Link href={`/users/${user.id}`}>
                           <p className="text-2xl hover:underline hover:underline-offset-1 cursor-pointer">
                             {user.username}
                           </p>

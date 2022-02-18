@@ -2,6 +2,7 @@ import { withSessionApi } from "../../../lib/session";
 import { micahAvatar } from "../../../lib/util";
 import { generate } from "rand-token";
 import clientPromise from "../../../lib/mongodb";
+import { simpleflake } from "simpleflakes";
 
 export default withSessionApi(async (req, res) => {
   if (req.method == "POST") {
@@ -30,12 +31,19 @@ export default withSessionApi(async (req, res) => {
       }
     };
 
+    const userId = simpleflake(
+      Date.now(),
+      23 - Math.round(Math.random() * 1000),
+      Date.UTC(2000, 0, 1)
+    );
+
     const new_user = await db.insertOne({
       username,
       password,
       avatar: (await checkImage(avatar)) == true ? avatar : new_avatar,
       token: new_token,
       blogs: [],
+      id: userId.toString(),
     });
 
     req.session.user = {
@@ -43,7 +51,7 @@ export default withSessionApi(async (req, res) => {
       avatar: (await checkImage(avatar)) == true ? avatar : new_avatar,
       token: new_token,
       blogs: [],
-      _id: new_user.insertedId.toString(),
+      id: userId.toString(),
     };
 
     await req.session.save();

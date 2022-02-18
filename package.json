@@ -31,7 +31,8 @@
     "remark-mdx": "^2.0.0",
     "remark-slug": "^7.0.1",
     "remark-toc": "^8.0.1",
-    "sharp": "^0.30.1"
+    "sharp": "^0.30.1",
+    "simpleflakes": "^2.2.2"
   },
   "devDependencies": {
     "@playwright/test": "^1.19.1",

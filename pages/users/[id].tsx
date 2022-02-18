@@ -1,4 +1,3 @@
-import { ObjectID } from "bson";
 import { ImEye, ImDrawer } from "react-icons/im";
 import Container from "../../components/ui/Container";
 import clientPromise from "../../lib/mongodb";
@@ -7,7 +6,6 @@ import { Blog, DBUser, User } from "../../typings";
 import Link from "next/link";
 import clsx from "clsx";
 import { useMediaQuery } from "react-responsive";
-import { useEffect, useState } from "react";
 
 interface Props {
   user?: User;
@@ -17,11 +15,6 @@ interface Props {
 
 export default function UserPage({ user, account, blogs }: Props) {
   const isMobile = useMediaQuery({ maxWidth: 728 });
-  //   const [views, setViews] = useState(0);
-
-  //   useEffect(() => {
-  //     blogs.map((blog) => blog.views).reduce()
-  //   }, [])
 
   return (
     <>
@@ -37,12 +30,21 @@ export default function UserPage({ user, account, blogs }: Props) {
                 className="rounded-full"
               />
               <div className="flex flex-col items-start">
-                <h1 className="text-white font-bold text-4xl">
+                <h1
+                  className={clsx(
+                    "text-white font-bold",
+                    account.username.length > 25
+                      ? "text-md leading-1"
+                      : account.username.length > 15
+                      ? "text-xl"
+                      : "text-2xl leading-2"
+                  )}
+                >
                   {account.username}
                 </h1>
                 <p className="text-gray-400 flex items-center space-x-1">
                   <ImDrawer /> <p>Total Blogs: {blogs.length}</p>
-                </p>
+                </p>{" "}
                 <p className="text-gray-400 flex items-center space-x-1">
                   <ImEye />{" "}
                   <p>

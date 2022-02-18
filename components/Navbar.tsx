@@ -2,7 +2,7 @@ import Link from "next/link";
 import { User } from "../typings/index";
 import { FiLogOut } from "react-icons/fi";
 import { AiOutlineMenu, AiOutlineUserAdd } from "react-icons/ai";
-import { FaAddressBook } from "react-icons/fa";
+import { FaAddressBook, FaUserPlus } from "react-icons/fa";
 import { FiEdit } from "react-icons/fi";
 import { IoIosCreate } from "react-icons/io";
 import { ReactNode, useEffect, useState } from "react";
@@ -73,7 +73,7 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
       <div className="absolute inset-x-0 top-0">
         <div className="flex justify-center items-center text-lg">
           <nav className="max-w-[150rem] bg-gray-700 flex justify-between p-5 mt-0 w-full z-[1]">
-            <div className="flex items-center space-x-[32rem]">
+            <div className="flex items-center space-x-[25rem]">
               {removeLeftImage ? null : (
                 <Link href={"/"} passHref>
                   <img
@@ -99,6 +99,12 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                       path: "/blogs/create",
                       icon: <IoIosCreate />,
                       customName: "create a blog",
+                    },
+                    {
+                      name: "Add friends",
+                      path: "/community/users",
+                      icon: <FaUserPlus />,
+                      customName: "Friends",
                     },
                   ]}
                 />
@@ -155,7 +161,7 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
           </nav>
           {hamburger && (
             <>
-              <ul className="absolute flex flex-col space-y-1 bg-gray-800 dark:bg-dark-200 box-border w-screen h-screen z-[9999999] px-6 top-[74px]">
+              <ul className="absolute flex flex-col space-y-3 bg-gray-800 dark:bg-dark-200 box-border w-screen h-screen z-[9999999] px-6 top-[74px]">
                 <br />
                 <Links
                   data={[
@@ -163,11 +169,19 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                       name: "Community Blogs",
                       path: "/blogs",
                       icon: <FaAddressBook />,
+                      customName: "community blogs",
                     },
                     {
                       name: "Create a blog",
                       path: "/blogs/create",
                       icon: <IoIosCreate />,
+                      customName: "create a blog",
+                    },
+                    {
+                      name: "Add friends",
+                      path: "/community/users",
+                      icon: <FaUserPlus />,
+                      customName: "Friends",
                     },
                   ]}
                 />
@@ -190,7 +204,11 @@ export default function Navbar({ user, removeLeftImage }: NavbarProps) {
                             className="rounded-full bg-transparent"
                           />
                           <div>
-                            <p>{user.username}</p>
+                            <Link href={`/users/${user.id}`} passHref>
+                              <p className="hover:underline hover:underline-offset-1">
+                                {user.username}
+                              </p>
+                            </Link>
                           </div>
                         </div>
                         <div className="space-x-2">

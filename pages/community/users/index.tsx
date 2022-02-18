@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import Container from "../../../components/ui/Container";
 import SearchBox from "../../../components/ui/SearchBox";
 import clientPromise from "../../../lib/mongodb";
@@ -6,14 +6,30 @@ import { withSessionSsr } from "../../../lib/session";
 import { DBUser, User } from "../../../typings";
 import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
+import { FaUserPlus } from "react-icons/fa";
+import Confirm from "../../../components/ui/Confirm";
 
 interface Props {
-  user?: User;
+  user: User;
   users: DBUser[];
 }
 
 export default function CommunityUsers({ user, users }: Props) {
   const [search, setSearch] = useState("");
+  const [pickedUserId, setPickedUserId] = useState<{
+    username: string;
+    id: string;
+  }>({ username: "", id: "" });
+  const [isOpen, setIsOpen] = useState(false);
+
+  function closeModal() {
+    setIsOpen(false);
+  }
+
+  function openModal() {
+    setIsOpen(true);
+  }
+
   const isMobile = useMediaQuery({ maxWidth: 728 });
 
   return (
@@ -47,12 +63,22 @@ export default function CommunityUsers({ user, users }: Props) {
                               user.id == search
                           )
                           .map((user) => (
-                            <UserContainer user={user} key={user.id} />
+                            <UserContainer
+                              user={user}
+                              key={user.id}
+                              openModal={openModal}
+                              setPicked={setPickedUserId}
+                            />
                           ))
                       : users
                           .slice(0, 50)
                           .map((user) => (
-                            <UserContainer user={user} key={user.id} />
+                            <UserContainer
+                              user={user}
+                              key={user.id}
+                              openModal={openModal}
+                              setPicked={setPickedUserId}
+                            />
                           ))}
                   </div>
                 </div>
@@ -70,13 +96,30 @@ export default function CommunityUsers({ user, users }: Props) {
                           .includes(search.toLowerCase()) || user.id == search
                     )
                     .map((user) => (
-                      <UserContainer user={user} key={user.id} />
+                      <UserContainer
+                        user={user}
+                        key={user.id}
+                        openModal={openModal}
+                        setPicked={setPickedUserId}
+                      />
                     ))}
                 </div>
               </>
             )}
           </div>
         </div>
+        <>
+          <Confirm
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            title={`Are you sure you want to friend ${pickedUserId.username} ?`}
+            description=""
+            onConfirm={(e) => {
+              fetch(`/api/users/${user.id}/friends?id=${pickedUserId.id}`, {});
+            }}
+            onCancel={(e) => console.log("cancled ")}
+          />
+        </>
       </Container>
     </>
   );
@@ -84,16 +127,18 @@ export default function CommunityUsers({ user, users }: Props) {
 
 interface UserContainerProps {
   user: DBUser;
+  openModal: () => any;
+  setPicked: Dispatch<SetStateAction<{ username: string; id: string }>>;
 }
 
-function UserContainer({ user }: UserContainerProps) {
+function UserContainer({ user, openModal, setPicked }: UserContainerProps) {
   return (
     <>
       <div
-        className="p-4 bg-gray-600 dark:bg-dark-100 rounded-md h-full w-[20rem] sm:w-[20rem] flex items-center space-x-5 hover:bg-gray-700 cursor-pointer"
+        className="p-4 bg-gray-600 dark:bg-dark-100 rounded-md h-full w-[20rem] sm:w-[20rem] flex items-center space-x-5"
         onClick={() => {}}
       >
-        <div className="flex items-end justify-start text-white">
+        <div className="flex items-center justify-between text-white w-full">
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-3">
               <img
@@ -104,9 +149,23 @@ function UserContainer({ user }: UserContainerProps) {
                 className="rounded-full"
               />
 
-              <p className="text-white font-semibold">{user.username}</p>
+              <Link href={`/users/${user.id}`} passHref>
+                <p className="text-white font-semibold hover:underline hover:underline-offset-1 cursor-pointer">
+                  {user.username}
+                </p>
+              </Link>
             </div>
           </div>
+          <FaUserPlus
+            className="text-green-500 hover:text-green-600 cursor-pointer"
+            onClick={() => {
+              openModal();
+              setPicked({
+                username: user.username,
+                id: user.id,
+              });
+            }}
+          />
         </div>
       </div>
     </>

@@ -16,9 +16,9 @@ export default function SearchBox({ setSearch, placeholder, boxSize }: Props) {
         boxSize == "large"
           ? "px-5 py-3"
           : boxSize == "medium"
-          ? "px-3 py-2"
+          ? "px-4 py-2"
           : boxSize == "small"
-          ? "px-2 py-1"
+          ? "px-3 py-1"
           : null
       )}
     >

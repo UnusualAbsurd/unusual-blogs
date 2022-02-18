@@ -25,6 +25,6 @@ REDIS_PASSWORD=
 - `REDIS_ENDPOINT` = Redis public endpoint
 - `REDIS_PASSWORD` = Redis user default password
 
-# HeadlessUI.dev [ Examples of tailwindcss components ( free ) ]
+## HeadlessUI.dev [ Examples of tailwindcss components ( free ) ]
 
 https://headlessui.dev

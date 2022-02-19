@@ -31,6 +31,7 @@ export default withSessionApi(async (req, res) => {
         token: data.token,
         blogs: data.blogs,
         id: data.id,
+        friends: data.friends,
       };
 
       await req.session.save();

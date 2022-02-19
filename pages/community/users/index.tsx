@@ -24,10 +24,6 @@ export default function CommunityUsers({ user, users }: Props) {
   }>({ username: "", id: "" });
   const [isOpen, setIsOpen] = useState(false);
 
-  function closeModal() {
-    setIsOpen(false);
-  }
-
   function openModal() {
     setIsOpen(true);
   }
@@ -78,7 +74,17 @@ export default function CommunityUsers({ user, users }: Props) {
                             />
                           ))
                       : users
-
+                          .filter(
+                            (account) =>
+                              account.id !== user.id &&
+                              (account.username
+                                .toLowerCase()
+                                .replace(/\s+/g, "")
+                                .includes(
+                                  search.toLowerCase().replace(/\s+/g, "")
+                                ) ||
+                                account.id == search)
+                          )
                           .slice(0, 50)
                           .map((user) => (
                             <UserContainer
@@ -128,7 +134,8 @@ export default function CommunityUsers({ user, users }: Props) {
             onConfirm={(e) => {
               if (pickedUserId.id == user.id)
                 return NotificationManager.error(`You cannot friend yourself`);
-              axios(`/api/users/${user.id}/friends?id=${pickedUserId}`, {
+              axios(`/api/users/${user.id}/friends?friend=${pickedUserId.id}`, {
+                method: "POST",
                 headers: {
                   authorization: user.token,
                 },

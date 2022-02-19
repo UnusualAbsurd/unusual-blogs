@@ -16,6 +16,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { NotificationManager } from "react-notifications";
 import clientPromise from "../../../lib/mongodb";
 import Link from "next/link";
+import CommentBox from "../../../components/blogs/CommentBox";
 
 interface Props {
   user?: User;
@@ -34,6 +35,8 @@ export default function Blogs({ user, blog, author }: Props) {
       axios.post(`${window.origin}/api/blogs/${id}/views`);
       localStorage.setItem(`view-${id}`, Date.now().toString());
     }
+
+    console.log(blog.comments);
   }, [id]);
 
   function delete_blog(origin: string, id: string) {
@@ -149,6 +152,8 @@ export default function Blogs({ user, blog, author }: Props) {
         </div>
       </div>
       <br />
+      <br />
+      <CommentBox blog={blog} user={user} />
       <br />
     </Container>
   );

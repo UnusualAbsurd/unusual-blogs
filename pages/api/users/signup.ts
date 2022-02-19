@@ -52,6 +52,7 @@ export default withSessionApi(async (req, res) => {
       token: new_token,
       blogs: [],
       id: userId.toString(),
+      friends: [],
     };
 
     await req.session.save();

@@ -17,6 +17,12 @@ export type User = {
   friends: string[];
 };
 
+export type Comment = {
+  user: User;
+  content: string;
+  date: string;
+};
+
 export type Blog = {
   title: string;
   subtitle: string;
@@ -24,4 +30,5 @@ export type Blog = {
   _id: string;
   private_blog: boolean | null;
   views: number;
+  comments?: Comment[];
 };

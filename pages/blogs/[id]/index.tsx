@@ -90,7 +90,7 @@ export default function Blogs({ user, blog, author }: Props) {
                 <FaShare /> <div>Share</div>
               </p>{" "}
               {user?.blogs.includes(blog._id) && (
-                <>
+                <div className="flex items-center space-x-5">
                   <Link href={`/blogs/${blog._id}/edit`}>
                     <p className="text-gray-500 text-xs cursor-pointer hover:underline hover:underline-offset-1 flex items-center space-x-1">
                       <FiEdit /> <div>Edit</div>
@@ -117,7 +117,7 @@ export default function Blogs({ user, blog, author }: Props) {
                       <BsFillTrashFill /> <div>Delete</div>
                     </p>
                   </div>
-                </>
+                </div>
               )}
             </div>
           </div>

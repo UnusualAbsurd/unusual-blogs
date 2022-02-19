@@ -157,36 +157,42 @@ export default function CreateBlog({ user }: Props) {
             </div>
           </div>
           <div>
-            <div className="text-lg text-black p-4 bg-white rounded-md h-full w-[20rem] sm:w-[42rem] flex flex-col space-y-3 group">
+            <div className="text-lg text-white p-4  rounded-md h-full w-[20rem] sm:w-[42rem] flex flex-col space-y-3 group">
               <div className="flex justify-center items-center">
-                <p className="font-bold">Preview</p>
+                <div>
+                  <h1 className="text-5xl font-semibold">{title}</h1>
+                  <p className="text-gray-500 text-2xl">{subtitle}</p>
+                </div>
               </div>
 
-              <ReactMarkdown
-                remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
-                rehypePlugins={[rehypeRaw]}
-                components={{
-                  h1: "h2",
-                  code({ node, inline, className, children, ...props }) {
-                    const match = /language-(\w+)/.exec(className || "");
-                    return !inline && match ? (
-                      <SyntaxHighlighter
-                        language={match[1]}
-                        PreTag="div"
-                        {...props}
-                      >
-                        {String(children).replace(/\n$/, "")}
-                      </SyntaxHighlighter>
-                    ) : (
-                      <code className={className} {...props}>
-                        {children}
-                      </code>
-                    );
-                  },
-                }}
-              >
-                {markdown}
-              </ReactMarkdown>
+              <div className="flex flex-col items-center">
+                {" "}
+                <ReactMarkdown
+                  remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+                  rehypePlugins={[rehypeRaw]}
+                  components={{
+                    h1: "h2",
+                    code({ node, inline, className, children, ...props }) {
+                      const match = /language-(\w+)/.exec(className || "");
+                      return !inline && match ? (
+                        <SyntaxHighlighter
+                          language={match[1]}
+                          PreTag="div"
+                          {...props}
+                        >
+                          {String(children).replace(/\n$/, "")}
+                        </SyntaxHighlighter>
+                      ) : (
+                        <code className={className} {...props}>
+                          {children}
+                        </code>
+                      );
+                    },
+                  }}
+                >
+                  {markdown}
+                </ReactMarkdown>
+              </div>
             </div>
           </div>
         </div>
@@ -242,37 +248,7 @@ export default function CreateBlog({ user }: Props) {
                   />
                 </div>
               </div>
-              <div className="text-lg text-black flex flex-col space-y-3 group">
-                <p className="font-bold">Preview</p>
 
-                <div className="border ">
-                  <ReactMarkdown
-                    remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
-                    rehypePlugins={[rehypeRaw]}
-                    components={{
-                      h1: "h2",
-                      code({ node, inline, className, children, ...props }) {
-                        const match = /language-(\w+)/.exec(className || "");
-                        return !inline && match ? (
-                          <SyntaxHighlighter
-                            language={match[1]}
-                            PreTag="div"
-                            {...props}
-                          >
-                            {String(children).replace(/\n$/, "")}
-                          </SyntaxHighlighter>
-                        ) : (
-                          <code className={className} {...props}>
-                            {children}
-                          </code>
-                        );
-                      },
-                    }}
-                  >
-                    {markdown}
-                  </ReactMarkdown>
-                </div>
-              </div>
               <div className="flex flex-col space-y-2">
                 <button
                   className="px-3 py-2 bg-gray-600 rounded-md hover:bg-transparent hover:border hover:border-gray-600 text-white"
@@ -306,6 +282,43 @@ export default function CreateBlog({ user }: Props) {
                   Create blog
                 </button>
               </div>
+            </div>
+          </div>
+          <div className="text-lg text-white flex flex-col space-y-3 group">
+            <div className="flex justify-center items-center">
+              <div>
+                <h1 className="text-5xl font-semibold">{title}</h1>
+                <p className="text-gray-500 text-2xl">{subtitle}</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center">
+              {" "}
+              <ReactMarkdown
+                remarkPlugins={[remarkSlug, remarkToc, remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={{
+                  h1: "h2",
+                  code({ node, inline, className, children, ...props }) {
+                    const match = /language-(\w+)/.exec(className || "");
+                    return !inline && match ? (
+                      <SyntaxHighlighter
+                        language={match[1]}
+                        PreTag="div"
+                        {...props}
+                      >
+                        {String(children).replace(/\n$/, "")}
+                      </SyntaxHighlighter>
+                    ) : (
+                      <code className={className} {...props}>
+                        {children}
+                      </code>
+                    );
+                  },
+                }}
+              >
+                {markdown}
+              </ReactMarkdown>
             </div>
           </div>
         </div>
